@@ -10,49 +10,92 @@ public class Game2 {
 	char computer = 'x';
     char human = 'x';
     int row,col;
-    Board2 board = new Board2();
-    static int level = 3;
-
+    Board2 board;
+    static int level;
+    
+    public Game2() {
+    	setMap();
+        board = new Board2(row,col);
+    }
+    
     public void setMap(){
         Scanner s = new Scanner(System.in);
+        int choice;
         System.out.println("#r:");
         row = s.nextInt();
         
         System.out.println("#c:");        
         col = s.nextInt();
+        
+        
+        System.out.println("#lev:1 = easy\n#lev:2 = intermidiate\n#lev:3 = hard");        
+        choice = s.nextInt();
+        
+        switch (choice) {
+		case 1:{
+			level=(row * col)/4;
+			if(level%2==1) level--;
+			System.out.println(level);
+			break;
+			}
+		case 2:{
+			level=(row * col)/2;
+			if(level%2==1) level--;
+			System.out.println(level);
+			break;
+			}
+			
+		case 3:{
+			level=row * col;
+			if(level%2==1) level--;
+			System.out.println(level);
+			break;
+		}
+		default:{
+			level=(row*col)/2;
+			if(level%2==1) level--;
+			System.out.print(level);
+			break;
+			}
+		}
+        
     	}
     
     public void play() {
         System.out.println(board);
         while (true) {
 
-         
-/*        	computerPlay();
-            System.out.println("_____Computer Turn______");
-            System.out.println(board);
-            if (board.isWin(computer)) {
-                System.out.println("I win :D I'm way smarter than you, you stupid human!");
-                break;
-            }
-            if (board.isWithdrow()) {
-                System.out.println("I guess we are even -_-");
-                break;
-            }
-*/
-            
+
+          	 computerPlay(); 
+               System.out.println("_____Computer Turn______");
+               System.out.println(board);
+               if (board.isLose(computer)) {
+                   System.out.println("I win :D I'm way smarter than you, you stupid human!");
+                   break;
+               }
+               if (board.isWithdrow()) {
+                   System.out.println("I guess we are even -_-");
+                   break;
+               }
+
+             
              humanPlay();
             System.out.println(board);
             if (board.isLose(human)) {
-                System.out.println("You Win I lose .... I don't like you any more :'(");
-                break;
+                //System.out.println("You Win I lose .... I don't like you any more :'(");
+            	System.out.println("I win :D I'm way smarter than you, you stupid human!");
+            	break;
             }
             if (board.isWithdrow()) {
                 System.out.println("I guess we are even -_-");
                 break;
             }
         
+       
  
-              computerPlay();
+            /*
+             computerPlay();
+             
             System.out.println("_____Computer Turn______");
             System.out.println(board);
             if (board.isLose(computer)) {
@@ -63,6 +106,7 @@ public class Game2 {
                 System.out.println("I guess we are even -_-");
                 break;
             }
+            */
       
         }
         
@@ -83,7 +127,7 @@ public class Game2 {
             	System.out.println(nextBoard);
             	System.out.println("");
             	*/
-            	int minMax = minmax(nextBoard,alpha,beta,20);
+            	int minMax = minmax(nextBoard,alpha,beta,level);
             	if(max <= minMax){
             		max = minMax;
                     board=nextBoard;
@@ -97,22 +141,22 @@ public class Game2 {
 
     private void humanPlay() {
         Scanner s = new Scanner(System.in);
-        int row;
+
         while (true) {
         while (true) {
             System.out.print("Enter row: ");
             row = s.nextInt();
             System.out.println();
-            if ((row > 0) && (row < 5)) {
+            if ((row > 0) && (row <= row)) {
                 break;
             }
         }
-        int col;
+
         while (true) {
             System.out.print("Enter column: ");
             col = s.nextInt();
             System.out.println();
-            if ((col > 0) && (col < 5)) {
+            if ((col > 0) && (col <= col)) {
                 break;
             }
         }
@@ -191,7 +235,6 @@ public class Game2 {
 
     public static void main(String[] args) {
         Game2 g = new Game2();
-        //g.setMap();
         g.play();
     }
 }
